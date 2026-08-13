@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cotizadordeseguro.com · Solicitud de cotización</title>
+<style>
+  :root{
+    --navy:#1c2f45;
+    --accent:#b8862b;
+    --bg:#f6f5f2;
+    --card:#ffffff;
+    --border:#dfe1e6;
+    --muted:#6b7280;
+    --text:#1f2937;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+  }
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:28px 20px;
+    text-align:center;
+  }
+  header h1{margin:0 0 6px;font-size:1.5rem;font-weight:600;}
+  header p{margin:0;color:#c7d0dc;font-size:0.95rem;}
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:24px 16px 80px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:24px;
+    margin-bottom:20px;
+  }
+  .card h2{
+    margin:0 0 4px;
+    font-size:1.15rem;
+    color:var(--navy);
+  }
+  .card .hint{color:var(--muted);font-size:0.88rem;margin:0 0 16px;}
+  label{
+    display:block;
+    font-size:0.85rem;
+    font-weight:600;
+    margin:14px 0 4px;
+    color:var(--navy);
+  }
+  label .opt{font-weight:400;color:var(--muted);}
+  input[type=text],input[type=number],input[type=email],input[type=tel],select,textarea{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    font-size:0.95rem;
+    font-family:inherit;
+    background:#fff;
+    color:var(--text);
+  }
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+  @media (max-width:560px){.grid2{grid-template-columns:1fr;}}
+  fieldset{border:1px dashed var(--border);border-radius:8px;padding:12px 14px 4px;margin-top:16px;}
+  legend{font-size:0.8rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.03em;padding:0 6px;}
+  .product-section{display:none;}
+  .product-section.active{display:block;}
+  .addbtn{
+    background:none;border:1px solid var(--accent);color:var(--accent);
+    padding:7px 14px;border-radius:6px;font-size:0.85rem;cursor:pointer;margin-top:10px;
+  }
+  .addbtn:hover{background:var(--accent);color:#fff;}
+  .removebtn{
+    background:none;border:none;color:#b3261e;font-size:0.8rem;cursor:pointer;padding:4px 0;
+  }
+  .submitbar{text-align:center;margin-top:8px;}
+  button.submit{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding:13px 34px;
+    font-size:1rem;
+    font-weight:600;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  button.submit:hover{background:#a3761f;}
+  .required-note{font-size:0.8rem;color:var(--muted);margin-top:10px;text-align:center;}
+  #fallback{display:none;margin-top:18px;}
+  #fallback textarea{height:220px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.8rem;}
+  #copyBtn{
+    margin-top:8px;background:var(--navy);color:#fff;border:none;padding:9px 16px;
+    border-radius:6px;font-size:0.85rem;cursor:pointer;
+  }
+  .asegurado-block{border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px;background:#fafafa;}
+  .asegurado-block h4{margin:0 0 8px;font-size:0.9rem;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>cotizadordeseguro.com</h1>
+  <p>Solicitud de datos para cotización de seguro</p>
+</header>
+
+<main>
+  <div class="card">
+    <h2>1. Elige el producto</h2>
+    <p class="hint">Selecciona el seguro que quieres cotizar. Solo verás los campos de ese producto.</p>
+    <select id="productSelect">
+      <option value="">— Selecciona un producto —</option>
+      <option value="autos">Autos</option>
+      <option value="motos">Motos</option>
+      <option value="hogar">Hogar</option>
+      <option value="vida">Vida Riesgo</option>
+      <option value="decesos">Decesos</option>
+      <option value="salud">Salud</option>
+    </select>
+
+    <label>Tu email de contacto <span class="opt">(para enviarte la cotización)</span> *</label>
+    <input type="email" id="contactEmail" required placeholder="tu@email.com">
+
+    <label>Tu teléfono de contacto <span class="opt">(opcional)</span></label>
+    <input type="tel" id="contactPhone" placeholder="600 000 000">
+  </div>
+
+  <form id="quoteForm">
+
+  <!-- AUTOS -->
+  <div class="card product-section" data-product="autos">
+    <h2>Autos</h2>
+    <fieldset>
+      <legend>Datos del vehículo</legend>
+      <div class="grid2">
+        <div><label>Matrícula *</label><input type="text" name="Matrícula"></div>
+        <div><label>Fecha de primera matriculación *</label><input type="text" name="Fecha de primera matriculación" placeholder="DD/MM/AAAA"></div>
+        <div><label>Fecha de compra *</label><input type="text" name="Fecha de compra" placeholder="DD/MM/AAAA"></div>
+        <div><label>Marca, modelo y versión *</label><input type="text" name="Marca, modelo y versión"></div>
+        <div><label>Código postal (donde se guarda) *</label><input type="text" name="Código postal vehículo"></div>
+        <div><label>Tipo de garaje *</label>
+          <select name="Tipo de garaje"><option></option><option>Vía pública</option><option>Garaje individual</option><option>Garaje colectivo</option></select>
+        </div>
+        <div><label>Kilómetros anuales *</label><input type="number" name="Kilómetros anuales"></div>
+        <div><label>¿Remolque ligero &lt;750kg? <span class="opt">(opcional)</span></label>
+          <select name="Remolque ligero"><option></option><option>Sí</option><option>No</option></select>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Conductor habitual (Tomador / Propietario)</legend>
+      <div class="grid2">
+        <div><label>DNI/NIE *</label><input type="text" name="DNI conductor"></div>
+        <div><label>Nombre y apellidos *</label><input type="text" name="Nombre conductor"></div>
+        <div><label>Teléfono *</label><input type="tel" name="Teléfono conductor"></div>
+        <div><label>Fecha de nacimiento *</label><input type="text" name="Fecha nacimiento conductor" placeholder="DD/MM/AAAA"></div>
+        <div><label>Fecha de carnet de conducir *</label><input type="text" name="Fecha carnet" placeholder="DD/MM/AAAA"></div>
+        <div><label>Estado civil *</label>
+          <select name="Estado civil"><option></option><option>Soltero</option><option>Casado</option><option>Pareja de hecho</option><option>Divorciado</option><option>Viudo</option></select>
+        </div>
+        <div><label>Género *</label>
+          <select name="Género conductor"><option></option><option>Hombre</option><option>Mujer</option></select>
+        </div>
+        <div><label>Conductor ocasional <span class="opt">(si lo hay, nombre y datos)</span></label><input type="text" name="Conductor ocasional"></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Seguro anterior</legend>
+      <div class="grid2">
+        <div><label>Fecha de efecto deseada *</label><input type="text" name="Fecha de efecto autos" placeholder="DD/MM/AAAA"></div>
+        <div><label>¿Tenía seguro anterior?</label><select name="Seguro anterior"><option></option><option>Sí</option><option>No</option></select></div>
+        <div><label>Compañía anterior</label><input type="text" name="Compañía anterior"></div>
+        <div><label>Número de póliza anterior</label><input type="text" name="Póliza anterior"></div>
+        <div><label>Total de años asegurado</label><input type="number" name="Años asegurado total"></div>
+        <div><label>Años en la compañía anterior</label><input type="number" name="Años compañía anterior"></div>
+        <div><label>Años sin siniestros</label><input type="number" name="Años sin siniestros"></div>
+      </div>
+    </fieldset>
+  </div>
+
+  <!-- MOTOS -->
+  <div class="card product-section" data-product="motos">
+    <h2>Motos</h2>
+    <fieldset>
+      <legend>Datos del vehículo</legend>
+      <div class="grid2">
+        <div><label>Matrícula *</label><input type="text" name="Matrícula moto"></div>
+        <div><label>Fecha de primera matriculación *</label><input type="text" name="Fecha primera matriculación moto" placeholder="DD/MM/AAAA"></div>
+        <div><label>Fecha de compra *</label><input type="text" name="Fecha de compra moto" placeholder="DD/MM/AAAA"></div>
+        <div><label>Marca, modelo, cilindrada y potencia *</label><input type="text" name="Marca modelo moto"></div>
+        <div><label>Código postal *</label><input type="text" name="Código postal moto"></div>
+        <div><label>Tipo de garaje *</label>
+          <select name="Tipo de garaje moto"><option></option><option>Vía pública</option><option>Garaje individual</option><option>Garaje colectivo</option></select>
+        </div>
+        <div><label>Kilómetros anuales *</label><input type="number" name="Kilómetros anuales moto"></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Conductor habitual (Tomador / Propietario)</legend>
+      <div class="grid2">
+        <div><label>DNI/NIE *</label><input type="text" name="DNI conductor moto"></div>
+        <div><label>Nombre y apellidos *</label><input type="text" name="Nombre conductor moto"></div>
+        <div><label>Teléfono *</label><input type="tel" name="Teléfono conductor moto"></div>
+        <div><label>Fecha de nacimiento *</label><input type="text" name="Fecha nacimiento conductor moto" placeholder="DD/MM/AAAA"></div>
+        <div><label>Fecha de carnet de conducir *</label><input type="text" name="Fecha carnet moto" placeholder="DD/MM/AAAA"></div>
+        <div><label>Estado civil *</label>
+          <select name="Estado civil moto"><option></option><option>Soltero</option><option>Casado</option><option>Pareja de hecho</option><option>Divorciado</option><option>Viudo</option></select>
+        </div>
+        <div><label>Género *</label>
+          <select name="Género conductor moto"><option></option><option>Hombre</option><option>Mujer</option></select>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Seguro anterior</legend>
+      <div class="grid2">
+        <div><label>Fecha de efecto deseada *</label><input type="text" name="Fecha de efecto moto" placeholder="DD/MM/AAAA"></div>
+        <div><label>¿Tenía seguro anterior?</label><select name="Seguro anterior moto"><option></option><option>Sí</option><option>No</option></select></div>
+        <div><label>Compañía anterior</label><input type="text" name="Compañía anterior moto"></div>
+        <div><label>Años sin siniestros</label><input type="number" name="Años sin siniestros moto"></div>
+      </div>
+    </fieldset>
+  </div>
+
+  <!-- HOGAR -->
+  <div class="card product-section" data-product="hogar">
+    <h2>Hogar</h2>
+    <fieldset>
+      <legend>Datos de la vivienda</legend>
+      <div class="grid2">
+        <div><label>Dirección completa *</label><input type="text" name="Dirección vivienda"></div>
+        <div><label>Código postal *</label><input type="text" name="Código postal vivienda"></div>
+        <div><label>Bloque / escalera / planta / puerta</label><input type="text" name="Bloque escalera planta puerta"></div>
+        <div><label>Año de construcción *</label><input type="number" name="Año construcción"></div>
+        <div><label>Superficie construida (m²) *</label><input type="number" name="Superficie m2"></div>
+        <div><label>Número de habitaciones *</label><input type="number" name="Número habitaciones"></div>
+        <div><label>Tipo de vivienda *</label>
+          <select name="Tipo de vivienda"><option></option><option>Piso planta baja</option><option>Piso intermedio</option><option>Ático</option><option>Unifamiliar adosado</option><option>Unifamiliar independiente</option></select>
+        </div>
+        <div><label>Régimen *</label><select name="Régimen"><option>Propietario</option><option>Inquilino</option></select></div>
+        <div><label>Uso *</label><select name="Uso vivienda"><option>Habitual</option><option>Secundaria</option></select></div>
+        <div><label>Situación *</label><input type="text" name="Situación vivienda" placeholder="Núcleo urbano..."></div>
+        <div><label>¿Reformada?</label><select name="Reformada"><option></option><option>Sí</option><option>No</option></select></div>
+        <div><label>Medidas de seguridad</label><input type="text" name="Medidas de seguridad" placeholder="Alarma, puerta blindada, rejas..."></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Tomador / asegurado</legend>
+      <div class="grid2">
+        <div><label>DNI/NIE *</label><input type="text" name="DNI hogar"></div>
+        <div><label>Nombre y apellidos *</label><input type="text" name="Nombre hogar"></div>
+        <div><label>Teléfono *</label><input type="tel" name="Teléfono hogar"></div>
+        <div><label>Fecha de nacimiento *</label><input type="text" name="Fecha nacimiento hogar" placeholder="DD/MM/AAAA"></div>
+        <div><label>Género *</label><select name="Género hogar"><option></option><option>Hombre</option><option>Mujer</option></select></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Seguro</legend>
+      <div class="grid2">
+        <div><label>Fecha de efecto *</label><input type="text" name="Fecha de efecto hogar" placeholder="DD/MM/AAAA"></div>
+        <div><label>Capital continente € <span class="opt">(si lo sabes)</span></label><input type="number" name="Capital continente"></div>
+        <div><label>Capital contenido € <span class="opt">(si lo sabes)</span></label><input type="number" name="Capital contenido"></div>
+        <div><label>Joyas en caja fuerte €</label><input type="number" name="Joyas caja fuerte"></div>
+        <div><label>Joyas fuera de caja fuerte €</label><input type="number" name="Joyas fuera caja fuerte"></div>
+        <div><label>Objetos de valor especial €</label><input type="number" name="Objetos valor especial"></div>
+      </div>
+      <p class="hint">Si no conoces los capitales, déjalos en blanco: la plataforma puede sugerirlos automáticamente.</p>
+    </fieldset>
+  </div>
+
+  <!-- VIDA RIESGO -->
+  <div class="card product-section" data-product="vida">
+    <h2>Vida Riesgo</h2>
+    <fieldset>
+      <legend>Datos del asegurado / tomador</legend>
+      <div class="grid2">
+        <div><label>DNI/NIE *</label><input type="text" name="DNI vida"></div>
+        <div><label>Nombre y apellidos *</label><input type="text" name="Nombre vida"></div>
+        <div><label>Código postal *</label><input type="text" name="Código postal vida"></div>
+        <div><label>Teléfono *</label><input type="tel" name="Teléfono vida"></div>
+        <div><label>Fecha de nacimiento *</label><input type="text" name="Fecha nacimiento vida" placeholder="DD/MM/AAAA"></div>
+        <div><label>Género *</label><select name="Género vida"><option></option><option>Hombre</option><option>Mujer</option></select></div>
+        <div><label>Ocupación económica *</label><input type="text" name="Ocupación económica"></div>
+        <div><label>¿Practica algún deporte? ¿Cuál?</label><input type="text" name="Deporte"></div>
+        <div><label>Peso (Kg)</label><input type="number" name="Peso"></div>
+        <div><label>Altura (cm)</label><input type="number" name="Altura"></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Seguro</legend>
+      <div class="grid2">
+        <div><label>Fecha de efecto *</label><input type="text" name="Fecha de efecto vida" placeholder="DD/MM/AAAA"></div>
+        <div><label>Capital de fallecimiento por cualquier causa €</label><input type="number" name="Capital fallecimiento"></div>
+      </div>
+      <label style="margin-top:14px;">Garantías opcionales <span class="opt">(marca las que quieras incluir)</span></label>
+      <div>
+        <label style="font-weight:400;"><input type="checkbox" name="Fallecimiento por accidente" style="width:auto;"> Fallecimiento por accidente</label>
+        <label style="font-weight:400;"><input type="checkbox" name="Fallecimiento por accidente de circulación" style="width:auto;"> Fallecimiento por accidente de circulación</label>
+        <label style="font-weight:400;"><input type="checkbox" name="Incapacidad permanente absoluta" style="width:auto;"> Incapacidad permanente absoluta</label>
+        <label style="font-weight:400;"><input type="checkbox" name="Incapacidad permanente absoluta por accidente" style="width:auto;"> Incapacidad permanente absoluta por accidente</label>
+        <label style="font-weight:400;"><input type="checkbox" name="Incapacidad permanente absoluta por accidente de circulación" style="width:auto;"> Incapacidad permanente absoluta por accidente de circulación</label>
+      </div>
+    </fieldset>
+  </div>
+
+  <!-- DECESOS -->
+  <div class="card product-section" data-product="decesos">
+    <h2>Decesos</h2>
+    <p class="hint">Puedes incluir más de un asegurado (por ejemplo, toda la unidad familiar).</p>
+    <div id="decesosAsegurados"></div>
+    <button type="button" class="addbtn" data-target="decesosAsegurados" data-prefix="Decesos">+ Añadir asegurado</button>
+    <fieldset>
+      <legend>Seguro</legend>
+      <label>Fecha de efecto *</label><input type="text" name="Fecha de efecto decesos" placeholder="DD/MM/AAAA">
+    </fieldset>
+  </div>
+
+  <!-- SALUD -->
+  <div class="card product-section" data-product="salud">
+    <h2>Salud</h2>
+    <p class="hint">Puedes incluir más de un asegurado (por ejemplo, toda la unidad familiar).</p>
+    <div id="saludAsegurados"></div>
+    <button type="button" class="addbtn" data-target="saludAsegurados" data-prefix="Salud">+ Añadir asegurado</button>
+    <fieldset>
+      <legend>Seguro</legend>
+      <label>Fecha de efecto *</label><input type="text" name="Fecha de efecto salud" placeholder="DD/MM/AAAA">
+    </fieldset>
+  </div>
+
+  <div class="card" id="submitCard" style="display:none;">
+    <div class="submitbar">
+      <button type="submit" class="submit">Enviar solicitud</button>
+      <p class="required-note">Al pulsar, la solicitud se envía automáticamente. No hace falta hacer nada más.</p>
+    </div>
+    <div id="fallback">
+      <p class="hint">No se ha podido enviar automáticamente. Copia este texto y envíalo tú mismo a <strong>larrosayasociados@gmail.com</strong>:</p>
+      <textarea id="fallbackText" readonly></textarea><br>
+      <button type="button" id="copyBtn">Copiar texto</button>
+    </div>
+  </div>
+
+  <div class="card" id="successMsg" style="display:none;text-align:center;">
+    <h2 style="color:#1f7a3d;">¡Solicitud enviada!</h2>
+    <p>Hemos recibido tus datos correctamente. Nos pondremos en contacto contigo en breve con tu cotización.</p>
+  </div>
+
+  </form>
+</main>
+
+<script>
+const productNames = {
+  autos: "Autos", motos: "Motos", hogar: "Hogar",
+  vida: "Vida Riesgo", decesos: "Decesos", salud: "Salud"
+};
+
+let aseguradoCount = { decesos: 0, salud: 0 };
+
+function addAsegurado(containerId, prefix){
+  const container = document.getElementById(containerId);
+  const key = prefix.toLowerCase();
+  aseguradoCount[key]++;
+  const n = aseguradoCount[key];
+  const block = document.createElement('div');
+  block.className = 'asegurado-block';
+  block.innerHTML = `
+    <h4>Asegurado ${n} ${n>1 ? '<button type="button" class="removebtn">Eliminar</button>':''}</h4>
+    <div class="grid2">
+      <div><label>DNI/NIE *</label><input type="text" name="${prefix} - DNI ${n}"></div>
+      <div><label>Nombre y apellidos *</label><input type="text" name="${prefix} - Nombre ${n}"></div>
+      <div><label>Código postal *</label><input type="text" name="${prefix} - CP ${n}"></div>
+      <div><label>Teléfono *</label><input type="tel" name="${prefix} - Teléfono ${n}"></div>
+      <div><label>Fecha de nacimiento *</label><input type="text" name="${prefix} - Fecha nacimiento ${n}" placeholder="DD/MM/AAAA"></div>
+      <div><label>Género *</label><select name="${prefix} - Género ${n}"><option></option><option>Hombre</option><option>Mujer</option></select></div>
+      ${key==='salud' ? `<div><label>¿Dado de alta como autónomo?</label><select name="${prefix} - Autónomo ${n}"><option></option><option>Sí</option><option>No</option></select></div>` : ''}
+    </div>`;
+  container.appendChild(block);
+  const rm = block.querySelector('.removebtn');
+  if(rm) rm.addEventListener('click', () => block.remove());
+}
+
+document.querySelectorAll('.addbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=> addAsegurado(btn.dataset.target, btn.dataset.prefix));
+});
+
+// start each with 1 asegurado
+addAsegurado('decesosAsegurados','Decesos');
+addAsegurado('saludAsegurados','Salud');
+
+const select = document.getElementById('productSelect');
+select.addEventListener('change', ()=>{
+  document.querySelectorAll('.product-section').forEach(s=>s.classList.remove('active'));
+  const val = select.value;
+  document.getElementById('submitCard').style.display = val ? 'block' : 'none';
+  if(val){
+    document.querySelector(`.product-section[data-product="${val}"]`).classList.add('active');
+  }
+});
+
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/larrosayasociados@gmail.com';
+
+document.getElementById('quoteForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const producto = select.value;
+  if(!producto){ alert('Selecciona un producto primero.'); return; }
+  const contactEmail = document.getElementById('contactEmail').value.trim();
+  if(!contactEmail){ alert('Indica tu email de contacto.'); return; }
+
+  const section = document.querySelector(`.product-section[data-product="${producto}"]`);
+  const fields = section.querySelectorAll('input, select');
+  const data = {};
+  data['Producto'] = productNames[producto];
+  data['Email de contacto del cliente'] = contactEmail;
+  const phone = document.getElementById('contactPhone').value.trim();
+  if(phone) data['Teléfono de contacto del cliente'] = phone;
+  let lines = [`Producto: ${productNames[producto]}`, `Email de contacto del cliente: ${contactEmail}`];
+  if(phone) lines.push(`Teléfono de contacto del cliente: ${phone}`);
+  lines.push('');
+  fields.forEach(f=>{
+    let val = '';
+    if(f.type === 'checkbox'){ val = f.checked ? 'Sí' : ''; }
+    else { val = f.value.trim(); }
+    if(val){ data[f.name] = val; lines.push(`${f.name}: ${val}`); }
+  });
+
+  const subject = `Solicitud de cotización - ${productNames[producto]} - ${contactEmail}`;
+  data['_subject'] = subject;
+  data['_template'] = 'table';
+  data['_captcha'] = 'false';
+
+  const body = lines.join('\n');
+  document.getElementById('fallbackText').value = `Para: larrosayasociados@gmail.com\nAsunto: ${subject}\n\n${body}`;
+
+  const submitBtn = document.querySelector('#submitCard button.submit');
+  const originalLabel = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Enviando...';
+  document.getElementById('fallback').style.display = 'none';
+
+  try {
+    const res = await fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if(!res.ok) throw new Error('Respuesta no válida del servidor');
+    document.getElementById('submitCard').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('successMsg').scrollIntoView({behavior:'smooth'});
+  } catch(err) {
+    document.getElementById('fallback').style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalLabel;
+  }
+});
+
+document.getElementById('copyBtn').addEventListener('click', ()=>{
+  const ta = document.getElementById('fallbackText');
+  ta.select();
+  document.execCommand('copy');
+  const btn = document.getElementById('copyBtn');
+  const original = btn.textContent;
+  btn.textContent = '¡Copiado!';
+  setTimeout(()=>btn.textContent = original, 1500);
+});
+</script>
+
+</body>
+</html>
