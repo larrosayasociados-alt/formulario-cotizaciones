@@ -102,6 +102,7 @@
   }
   .asegurado-block{border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px;background:#fafafa;}
   .asegurado-block h4{margin:0 0 8px;font-size:0.9rem;color:var(--navy);}
+  .consent-box{background:#fafafa;border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:0.85rem;color:var(--text);}
 </style>
 </head>
 <body>
@@ -335,6 +336,12 @@
   </div>
 
   <div class="card" id="submitCard" style="display:none;">
+    <div class="consent-box">
+      <label style="font-weight:400;display:flex;gap:8px;align-items:flex-start;">
+        <input type="checkbox" id="consentCheckbox" style="width:auto;margin-top:3px;">
+        <span>Acepto que Larrosa y Asociados trate los datos indicados en este formulario con la finalidad de tramitar esta solicitud de cotización y, en su caso, la póliza contratada, incluyendo su comunicación a las compañías aseguradoras necesarias para quedar cubiertos ante una eventual reclamación o siniestro. *</span>
+      </label>
+    </div>
     <div class="submitbar">
       <button type="submit" class="submit">Enviar solicitud</button>
       <p class="required-note">Al pulsar, la solicitud se envía automáticamente. No hace falta hacer nada más.</p>
@@ -411,15 +418,17 @@ document.getElementById('quoteForm').addEventListener('submit', async function(e
   if(!producto){ alert('Selecciona un producto primero.'); return; }
   const contactEmail = document.getElementById('contactEmail').value.trim();
   if(!contactEmail){ alert('Indica tu email de contacto.'); return; }
+  if(!document.getElementById('consentCheckbox').checked){ alert('Debes aceptar que compartimos tus datos con nosotros para poder tramitar la solicitud.'); return; }
 
   const section = document.querySelector(`.product-section[data-product="${producto}"]`);
   const fields = section.querySelectorAll('input, select');
   const data = {};
   data['Producto'] = productNames[producto];
   data['Email de contacto del cliente'] = contactEmail;
+  data['Consentimiento de tratamiento de datos'] = 'Aceptado';
   const phone = document.getElementById('contactPhone').value.trim();
   if(phone) data['Teléfono de contacto del cliente'] = phone;
-  let lines = [`Producto: ${productNames[producto]}`, `Email de contacto del cliente: ${contactEmail}`];
+  let lines = [`Producto: ${productNames[producto]}`, `Email de contacto del cliente: ${contactEmail}`, `Consentimiento de tratamiento de datos: Aceptado`];
   if(phone) lines.push(`Teléfono de contacto del cliente: ${phone}`);
   lines.push('');
   fields.forEach(f=>{
