@@ -421,6 +421,26 @@ document.getElementById('quoteForm').addEventListener('submit', async function(e
   if(!document.getElementById('consentCheckbox').checked){ alert('Debes aceptar que compartimos tus datos con nosotros para poder tramitar la solicitud.'); return; }
 
   const section = document.querySelector(`.product-section[data-product="${producto}"]`);
+  const missing = [];
+  section.querySelectorAll('label').forEach(lab => {
+    if (!lab.textContent.includes('*')) return;
+    const wrap = lab.closest('div') || lab.parentElement;
+    const field = wrap.querySelector('input:not([type=checkbox]):not([type=hidden]), select');
+    if (!field) return;
+    if (!String(field.value || '').trim()) {
+      missing.push(lab.textContent.replace('*','').trim());
+      field.style.borderColor = '#b3261e';
+    } else {
+      field.style.borderColor = '';
+    }
+  });
+  if (missing.length) {
+    alert('Faltan campos obligatorios: ' + missing.slice(0, 8).join(', ') + (missing.length > 8 ? '…' : ''));
+    const first = section.querySelector('input[style*="b3261e"], select[style*="b3261e"]');
+    if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
   const fields = section.querySelectorAll('input, select');
   const data = {};
   data['Producto'] = productNames[producto];
