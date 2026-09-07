@@ -6,7 +6,7 @@
   <title>Facturas · Radio Nueva Moda</title>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/larrosayasociados-alt/facturas-radio-nueva-moda@main/styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/larrosayasociados-alt/facturas-radio-nueva-moda@df19e6ec586dad8c52738b6d29565294d344c359/styles.css" />
 </head>
 <body>
   <header class="top">
@@ -19,7 +19,7 @@
     <div class="grid">
       <section class="card">
         <h2>Nueva factura</h2>
-        <p class="hint">El número se asigna solo y no se reutiliza. Los datos se guardan en este navegador.</p>
+        <p class="hint">El número se asigna solo. Los datos del emisor salen fijos, como en la factura.</p>
         <div class="field"><span class="num-badge">Próxima factura <span id="nextLabel">n.º 8</span></span></div>
         <div class="row">
           <div class="field"><label>Fecha de factura</label><input type="date" id="fecha" /></div>
@@ -37,27 +37,21 @@
         <div class="totals"><div><span>Subtotal</span><b id="subtotalTxt">0,00 €</b></div><div><span id="igicLabel">IGIC (0% exento)</span><b id="igicTxt">0,00 €</b></div><div class="grand"><span>Total</span><span id="totalTxt">0,00 €</span></div></div>
         <h2>Enviar al cliente</h2>
         <div class="send-box">
-          <p class="hint">Se descarga el PDF y luego se abre WhatsApp o el correo con el texto listo. Adjunte el PDF.</p>
+          <p class="hint">Se descarga el PDF y luego se abre WhatsApp o el correo. Adjunte el PDF.</p>
           <div class="field"><label>Mensaje</label><textarea id="mensaje">Hola, le enviamos la factura de Radio Nueva Moda. Quedamos a su disposición.</textarea></div>
           <div class="actions"><button class="btn-gold" type="button" id="btnPdf">Descargar PDF</button><button class="btn-wa" type="button" id="btnWa">WhatsApp</button><button class="btn-mail" type="button" id="btnMail">Email</button></div>
         </div>
       </section>
       <aside>
         <section class="card">
-          <h2>Datos de la emisora</h2>
-          <div class="field"><label>Nombre comercial</label><input id="emNombre" /></div>
-          <div class="field"><label>Emitida por</label><input id="emPersona" /></div>
-          <div class="row"><div class="field"><label>NIT / NIF</label><input id="emNif" /></div><div class="field"><label>Teléfono</label><input id="emTel" /></div></div>
-          <div class="field"><label>Dirección</label><input id="emDir" /></div>
-          <div class="field"><label>Email</label><input id="emEmail" /></div>
-          <div class="field"><label>Web</label><input id="emWeb" /></div>
-          <div class="field"><label>IBAN</label><input id="emIban" /></div>
-          <div class="row"><div class="field"><label>Banco</label><input id="emBanco" /></div><div class="field"><label>Siguiente número</label><input id="nextNum" type="number" min="1" /></div></div>
-          <div class="actions"><button class="btn-ghost" type="button" id="saveSettings">Guardar datos</button></div>
+          <h2>Emisor (fijo)</h2>
+          <p class="hint">Estos datos se imprimen siempre igual que en la factura original.</p>
+          <p><b>RADIO NUEVA MODA</b><br>Juan Carlos Torres Bahamon<br>NIT 78848822S<br>Centro Comercial Buganvillas<br>625 36 17 79<br>pachanquita01@gmail.com<br>www.radionuevamoda.com<br>BBVA ES61 0182 0779 6502 0163 9932</p>
+          <div class="field"><label>Siguiente número</label><input id="nextNum" type="number" min="1" value="8" /></div>
         </section>
         <section class="card" style="margin-top:14px">
           <h2>Historial</h2>
-          <p class="hint">Pulse una factura para recargarla. Exportar copia sirve para cambiar de ordenador.</p>
+          <p class="hint">Pulse una factura para recargarla.</p>
           <div class="hist" id="historial"></div>
           <div class="actions"><button class="btn-ghost" type="button" id="exportJson">Exportar copia</button><button class="btn-ghost" type="button" id="importJson">Importar</button><input type="file" id="importFile" accept="application/json" hidden /></div>
         </section>
@@ -65,8 +59,8 @@
     </div>
   </main>
   <div class="toast" id="toast"></div>
-  <script src="https://cdn.jsdelivr.net/gh/larrosayasociados-alt/facturas-radio-nueva-moda@main/logo.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/larrosayasociados-alt/facturas-radio-nueva-moda@main/pdf.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/larrosayasociados-alt/facturas-radio-nueva-moda@main/core.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/larrosayasociados-alt/facturas-radio-nueva-moda@df19e6ec586dad8c52738b6d29565294d344c359/logo.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/larrosayasociados-alt/facturas-radio-nueva-moda@df19e6ec586dad8c52738b6d29565294d344c359/pdf.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/larrosayasociados-alt/facturas-radio-nueva-moda@df19e6ec586dad8c52738b6d29565294d344c359/core.js"></script>
 </body>
 </html>
